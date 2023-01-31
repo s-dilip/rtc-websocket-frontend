@@ -3,12 +3,16 @@ import useWebSocket from "react-use-websocket";
 
 export default function ChatRoom() {
   const [user, setUser] = useState("");
+  const [messages, setMessages] = useState([]);
 
   const { sendJsonMessage, lastJsonMessage } = useWebSocket(
     "ws://localhost:8080",
     {
       onOpen: () => {
         console.log("Websocket Connection Established!");
+      },
+      onMessage: (message) => {
+        console.log(message);
       },
     }
   );
