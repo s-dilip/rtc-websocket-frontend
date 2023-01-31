@@ -1,30 +1,35 @@
 import { useState } from "react";
 import useWebSocket from "react-use-websocket";
+import MessageList from "./MessageList";
 
 export default function ChatRoom() {
-  const [user, setUser] = useState("");
   const [messages, setMessages] = useState([]);
+  const [messageText, setMessageText] = useState("");
 
-  const { sendJsonMessage, lastJsonMessage } = useWebSocket(
-    "ws://localhost:8080",
-    {
-      onOpen: () => {
-        console.log("Websocket Connection Established!");
-      },
-      onMessage: (message) => {
-        console.log(message);
-      },
-    }
-  );
+  const { sendJsonMessage } = useWebSocket("ws://localhost:8080", {
+    onOpen: () => {
+      console.log("Websocket Connection Established!");
+    },
+    onMessage: (message) => {
+      console.log(message);
+      setMessages([...messages, message.data]);
+    },
+  });
 
   function handleSendMessage() {
-    sendJsonMessage({ message: "Hello" });
+    sendJsonMessage(messageText);
+  }
+
+  function handleMessageEntry(e) {
+    setMessageText(e.target.value);
   }
 
   return (
     <div>
       <h1>ChatRoom</h1>
-      <button onClick={handleSendMessage}>Send Hello!</button>
+      <MessageList messages={messages} />
+      <input onChange={handleMessageEntry}></input> <br />
+      <button onClick={handleSendMessage}>Send!</button>
     </div>
   );
 }
