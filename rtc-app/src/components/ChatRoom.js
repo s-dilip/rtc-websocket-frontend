@@ -1,29 +1,42 @@
 import { useState } from "react";
 import useWebSocket from "react-use-websocket";
 import MessageList from "./MessageList";
+import TypingList from "./TypingList";
 
 export default function ChatRoom() {
   const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
   const [user, setUser] = useState("");
   const [showUserField, setShowUserField] = useState(true);
+  const [userTyping, setUserTyping] = useState("");
 
   const { sendJsonMessage } = useWebSocket("ws://localhost:8080", {
     onOpen: () => {
       console.log("Websocket Connection Established!");
     },
     onMessage: (message) => {
-      console.log(message);
-      setMessages([...messages, message.data]);
+      console.log(JSON.parse(message.data));
+      let messageRecieved = JSON.parse(message.data);
+
+      if (messageRecieved.type === "content") {
+        setMessages([...messages, messageRecieved.content]);
+      } else {
+        setUserTyping(messageRecieved.content);
+
+        setTimeout(() => {
+          setUserTyping("");
+        }, 2000);
+      }
     },
   });
 
   function handleSendMessage() {
-    sendJsonMessage(messageText);
+    sendJsonMessage({ type: "content", content: user + ": " + messageText });
   }
 
   function handleMessageEntry(e) {
     setMessageText(e.target.value);
+    sendJsonMessage({ type: "typing", content: user + " is typing..." });
   }
 
   function handleUserNameEntry(e) {
@@ -49,6 +62,7 @@ export default function ChatRoom() {
       ) : (
         <div>
           <h3>Welcome! {user}</h3>
+          <TypingList typist={userTyping} />
           <MessageList messages={messages} />
           <input onChange={handleMessageEntry}></input> <br />
           <button onClick={handleSendMessage}>Send!</button>
