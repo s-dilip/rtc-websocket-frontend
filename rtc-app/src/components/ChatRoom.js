@@ -10,6 +10,10 @@ export default function ChatRoom() {
   const [showUserField, setShowUserField] = useState(true);
   const [userTyping, setUserTyping] = useState("");
 
+  let timeOut = setTimeout(() => {
+    setUserTyping("");
+  }, 2000);
+
   const { sendJsonMessage } = useWebSocket("ws://localhost:8080", {
     onOpen: () => {
       console.log("Websocket Connection Established!");
@@ -21,9 +25,10 @@ export default function ChatRoom() {
       if (messageRecieved.type === "content") {
         setMessages([...messages, messageRecieved.content]);
       } else {
+        clearTimeout(timeOut);
         setUserTyping(messageRecieved.content);
 
-        setTimeout(() => {
+        timeOut = setTimeout(() => {
           setUserTyping("");
         }, 2000);
       }
