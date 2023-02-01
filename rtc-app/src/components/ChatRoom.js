@@ -11,7 +11,7 @@ export default function ChatRoom() {
   const [userTyping, setUserTyping] = useState("");
 
   const { sendJsonMessage } = useWebSocket(
-    "ws://rtc-websocket-backend-production.up.railway.app",
+    "wss://rtc-websocket-backend-production.up.railway.app",
     {
       onOpen: () => {
         console.log("Websocket Connection Established!");
