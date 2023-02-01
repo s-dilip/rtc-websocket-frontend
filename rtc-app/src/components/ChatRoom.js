@@ -10,25 +10,28 @@ export default function ChatRoom() {
   const [showUserField, setShowUserField] = useState(true);
   const [userTyping, setUserTyping] = useState("");
 
-  const { sendJsonMessage } = useWebSocket("ws://localhost:8080", {
-    onOpen: () => {
-      console.log("Websocket Connection Established!");
-    },
-    onMessage: (message) => {
-      console.log(JSON.parse(message.data));
-      let messageRecieved = JSON.parse(message.data);
+  const { sendJsonMessage } = useWebSocket(
+    "ws://rtc-websocket-backend-production.up.railway.app",
+    {
+      onOpen: () => {
+        console.log("Websocket Connection Established!");
+      },
+      onMessage: (message) => {
+        console.log(JSON.parse(message.data));
+        let messageRecieved = JSON.parse(message.data);
 
-      if (messageRecieved.type === "content") {
-        setMessages([...messages, messageRecieved.content]);
-      } else {
-        setUserTyping(messageRecieved.content);
+        if (messageRecieved.type === "content") {
+          setMessages([...messages, messageRecieved.content]);
+        } else {
+          setUserTyping(messageRecieved.content);
 
-        setTimeout(() => {
-          setUserTyping("");
-        }, 2000);
-      }
-    },
-  });
+          setTimeout(() => {
+            setUserTyping("");
+          }, 2000);
+        }
+      },
+    }
+  );
 
   function handleSendMessage() {
     sendJsonMessage({ type: "content", content: user + ": " + messageText });
