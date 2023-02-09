@@ -11,7 +11,8 @@ export default function ChatRoom() {
   const [userTyping, setUserTyping] = useState("");
 
   const { sendJsonMessage } = useWebSocket(
-    "wss://rtc-websocket-backend-production.up.railway.app",
+    // "wss://rtc-websocket-backend-production.up.railway.app",
+    "ws://localhost:8080",
     {
       onOpen: () => {
         console.log("Websocket Connection Established!");
@@ -21,7 +22,11 @@ export default function ChatRoom() {
         let messageRecieved = JSON.parse(message.data);
 
         if (messageRecieved.type === "content") {
-          setMessages([...messages, messageRecieved.content]);
+          const message = {
+            sender: messageRecieved.sender,
+            content: messageRecieved.content,
+          };
+          setMessages([...messages, message]);
         } else {
           setUserTyping(messageRecieved.content);
 
@@ -34,12 +39,12 @@ export default function ChatRoom() {
   );
 
   function handleSendMessage() {
-    sendJsonMessage({ type: "content", content: user + ": " + messageText });
+    sendJsonMessage({ type: "content", sender: user, content: messageText });
   }
 
   function handleMessageEntry(e) {
     setMessageText(e.target.value);
-    sendJsonMessage({ type: "typing", content: user + " is typing..." });
+    // sendJsonMessage({ type: "typing", content: user + " is typing..." });
   }
 
   function handleUserNameEntry(e) {

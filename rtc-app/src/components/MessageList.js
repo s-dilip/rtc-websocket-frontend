@@ -3,7 +3,12 @@ export default function MessageList(props) {
     <div>
       <h3>Messages</h3>
       {props.messages.map((message, i) => {
-        return <p key={i}>{message}</p>;
+        return (
+          <div>
+            <h3 key={i}>{message.sender}</h3>
+            <p>{message.content}</p>
+          </div>
+        );
       })}
     </div>
   );
