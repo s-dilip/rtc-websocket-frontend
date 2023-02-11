@@ -1,4 +1,65 @@
 .userRoboImage {
-  height: 50px;
-  width: 50px;
+  height: 80px;
+  width: 80px;
+}
+
+.speechBubble {
+  padding: 15px;
+  margin: 15px;
+  border: solid;
+  border-width: 3px;
+  border-color: #f72585;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #f72585;
+  background-color: #b5179e;
+  display: flex;
+  max-width: 60%;
+  flex-direction: row;
+  align-content: center;
+  justify-content: flex-start;
+}
+
+.roboImgContainer {
+  display: flex;
+  align-content: center;
+  margin-right: 15px;
+  border: solid;
+  border-width: 1.5px;
+  border-color: #4cc9f0;
+  box-shadow: 0 0 10px #4cc9f0;
+  background-color: #4cc9f0;
+  border-radius: 10%;
+}
+
+.listContainer {
+  padding: 25px;
+  margin: 15px;
+  border: solid;
+  border-width: 3px;
+  border-color: #4895ef;
+  border-radius: 10px;
+  background-color: #4361ee;
+  box-shadow: 0 0 10px #4895ef;
+}
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+}
+
+.senderContainer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.senderName {
+  color: white;
+  padding: 0px;
+  margin: 0px;
+}
+
+.messageContent {
+  color: white;
+  padding: 0px;
+  margin: 0px;
 }

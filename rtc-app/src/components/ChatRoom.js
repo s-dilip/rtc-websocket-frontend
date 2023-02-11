@@ -2,6 +2,7 @@ import { useState } from "react";
 import useWebSocket from "react-use-websocket";
 import MessageList from "./MessageList";
 import TypingList from "./TypingList";
+import "./styles/ChatRoom.css";
 
 export default function ChatRoom() {
   const [messages, setMessages] = useState([]);
